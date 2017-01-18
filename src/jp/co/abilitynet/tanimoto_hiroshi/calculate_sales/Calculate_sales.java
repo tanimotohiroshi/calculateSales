@@ -31,6 +31,8 @@ public class Calculate_sales {
 		HashMap<String, String> branchNameMap = new HashMap<>();
 		HashMap<String, Long> branchSalesMap = new HashMap<>();
 
+
+
 		if(!readingFile( args[0], "branch.lst" , "支店" , "^\\d{3}$" , branchNameMap,branchSalesMap )){
 			return;
 		}
@@ -216,20 +218,23 @@ public class Calculate_sales {
 		BufferedReader br = null;
 
 		try {
+
 			File File = new File(path, filename);
 			FileReader filereader = new FileReader( File );
 			br  = new BufferedReader( filereader );
 			String str;
 			while ((str = br.readLine()) != null) {
-				String[] Element = str.split(",", 0);
-				if (2 != Element.length) {
+				String[] element = str.split(",", 0);
+				if (2 != element.length) {
 					System.out.println( name + "定義ファイルのフォーマットが不正です");
+					return false;
 				}
-				if (!Element[0].matches(code)) {
+				if (!element[0].matches(code)) {
 					System.out.println( name + "定義ファイルのフォーマットが不正です");
+					return false;
 				}
-				nameMap.put(Element[0], Element[1]);
-				salesMap.put(Element[0], 0L);
+				nameMap.put(element[0], element[1]);
+				salesMap.put(element[0], 0L);
 			}
 		} catch (IOException e) {
 			System.out.println( name + "定義ファイルが存在しません");
