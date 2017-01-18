@@ -28,10 +28,10 @@ public class Calculate_sales {
 		/* 支店定義ファイル */
 
 		/* 支店別売上額合計を保持するマップ */
-		HashMap<String, String> branchMap = new HashMap<>();
+		HashMap<String, String> branchNameMap = new HashMap<>();
 		HashMap<String, Long> branchSalesMap = new HashMap<>();
 
-		if(!readingFile(args[0],"branch.lst","支店","^\\d{3}$",branchMap,branchSalesMap)){
+		if(!readingFile( args[0], "branch.lst" , "支店" , "^\\d{3}$" , branchNameMap,branchSalesMap )){
 			return;
 		}
 
@@ -41,10 +41,11 @@ public class Calculate_sales {
 		/* 商品定義ファイル */
 
 		/* 商品別売上合計を保持するマップ */
-		HashMap<String, String> commodityMap = new HashMap<>();
+		HashMap<String, String> commodityNameMap = new HashMap<>();
 		HashMap<String, Long> commoditySalesMap = new HashMap<>();
 
-		if(!readingFile(args[0], "commodity.lst", "商品", "[0-9a-zA-Z]{8}", commodityMap, commoditySalesMap) ){
+		if(!readingFile( args[0] , "commodity.lst" , "商品" , "[0-9a-zA-Z]{8}" ,
+				commodityNameMap, commoditySalesMap) ){
 			return;
 		}
 
@@ -55,21 +56,19 @@ public class Calculate_sales {
 		/* 売上ファイルの選別 */
 		/* 8桁で.rcdのファイルをarrayListに格納 */
 
-		File files = new File(args[0]);
-		File[] files1 = files.listFiles();
+		File[] files1 = new File(args[0]).listFiles();
 		ArrayList<File> salesFiles = new ArrayList<>();
 
 		for (int i = 0; i < files1.length; i++) {
 			File file = files1[i];
 			if (files1[i].isFile()) {
-				if (file.getName().matches("[0-9]{8}.rcd")) {
+				if (file.getName().matches("^[0-9]{8}.rcd$")) {
 					salesFiles.add(file);
 				}
 			}
 		}
 
 		/* 連番でなければ終了 */
-
 		for (int i = 0; i < salesFiles.size(); i++) {
 			String str = salesFiles.get(i).getName().substring(1, 8);
 			int d = Integer.parseInt(str);
@@ -81,17 +80,14 @@ public class Calculate_sales {
 
 		Long branchSum;/* 支店別売上額合計 */
 		Long commoditySum;/* 商品別売上額合計 */
-		
-
 		for (int i = 0; i < salesFiles.size(); i++) {
 
 			BufferedReader br = null;
 			try {
 
-				
+
 				salesFiles.get(i).getName();
-				
-				
+
 				FileReader fr = new FileReader(salesFiles.get(i));
 				br = new BufferedReader(fr);
 
@@ -107,12 +103,12 @@ public class Calculate_sales {
 					return;
 				}
 
-				if (!branchMap.containsKey(array.get(0))) {
+				if (!branchNameMap.containsKey(array.get(0))) {
 					System.out.println(salesFiles.get(i).getName() + "の支店コードが不正です");
 					return;
 				}
 
-				if (!commodityMap.containsKey(array.get(1))) {
+				if (!commodityNameMap.containsKey(array.get(1))) {
 					System.out.println(salesFiles.get(i).getName() + "の商品コードが不正です");
 					return;
 				}
@@ -130,7 +126,7 @@ public class Calculate_sales {
 				branchSalesMap.put(array.get(0), branchSum);
 				long checkSum1 = String.valueOf(branchSum).length();
 
-				if (checkSum1 > 10L) {
+				if (checkSum1 > 10 ) {
 					System.out.println("合計金額が10桁を超えました");
 					return;
 				}
@@ -143,7 +139,8 @@ public class Calculate_sales {
 				commoditySalesMap.put(array.get(1), commoditySum);
 				long checkSum2 = String.valueOf(commoditySum).length();
 
-				if (checkSum2 > 10L) {
+
+				if (checkSum2 > 10 ) {
 					System.out.println("合計金額が10桁を超えました");
 					return;
 				}
@@ -161,14 +158,14 @@ public class Calculate_sales {
 		}
 
 		/* 支店別集計ファイルの作成、書き込み */
-		if (!writingFile(args[0] , "branch.out" , branchMap , branchSalesMap )){
+		if (!writingFile( args[0] , "branch.out" , branchNameMap , branchSalesMap )){
 			return;
 		}
-		
+
 
 		/*商品別ファイルの作成、書き込み*/
 
-		if(!writingFile(args[0] , "commodity.out" , commodityMap , commoditySalesMap )){
+		if(!writingFile( args[0] , "commodity.out" , commodityNameMap , commoditySalesMap )){
 			return;
 		}
 	}
@@ -188,8 +185,8 @@ public class Calculate_sales {
 			System.out.println("予期せぬエラーが発生しました");
 			return false ;
 		}
-		List<Map.Entry<String, Long>> SalesMap2 = new ArrayList<>( mapNameSalesMap.entrySet());
-		Collections.sort(SalesMap2, new Comparator<Map.Entry<String, Long>>() {
+		List<Map.Entry<String, Long>> salesMap2 = new ArrayList<>( mapNameSalesMap.entrySet());
+		Collections.sort(salesMap2, new Comparator<Map.Entry<String, Long>>() {
 			@Override
 			public int compare(Map.Entry<String, Long> o1, Map.Entry<String, Long> o2) {
 				return o2.getValue().compareTo(o1.getValue());
@@ -198,7 +195,7 @@ public class Calculate_sales {
 
 		try {
 			FileWriter filewriter = new FileWriter(SummaryFiles);
-			for (Map.Entry<String, Long> e : SalesMap2) {
+			for (Map.Entry<String, Long> e : salesMap2) {
 				filewriter.write(e.getKey() + "," + mapName.get(e.getKey()) + "," + e.getValue() + Separate);
 			}
 			filewriter.close();
