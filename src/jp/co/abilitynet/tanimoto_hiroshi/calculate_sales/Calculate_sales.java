@@ -32,8 +32,8 @@ public class Calculate_sales {
 		HashMap<String, Long> branchSalesMap = new HashMap<>();
 
 
-
-		if(!readingFile( args[0], "branch.lst" , "支店" , "^\\d{3}$" , branchNameMap,branchSalesMap )){
+		String branchFilePath = new String ( args[0] + File.separator + "branch.lst");
+		if(!readingFile( branchFilePath, "支店", "^\\d{3}$", branchNameMap, branchSalesMap )){
 			return;
 		}
 
@@ -46,7 +46,8 @@ public class Calculate_sales {
 		HashMap<String, String> commodityNameMap = new HashMap<>();
 		HashMap<String, Long> commoditySalesMap = new HashMap<>();
 
-		if(!readingFile( args[0] , "commodity.lst" , "商品" , "[0-9a-zA-Z]{8}" ,
+		String commodityFilePath = new String ( args[0] + File.separator + "commodity.lst" );
+		if(!readingFile( commodityFilePath , "商品" , "[0-9a-zA-Z]{8}" ,
 				commodityNameMap, commoditySalesMap) ){
 			return;
 		}
@@ -181,12 +182,7 @@ public class Calculate_sales {
 		File SummaryFiles = new File( path , fileName );
 		String Separate = System.getProperty("line.separator");
 
-		try {
-			SummaryFiles.createNewFile();
-		} catch (IOException e) {
-			System.out.println("予期せぬエラーが発生しました");
-			return false ;
-		}
+
 		List<Map.Entry<String, Long>> salesMap2 = new ArrayList<>( mapNameSalesMap.entrySet());
 		Collections.sort(salesMap2, new Comparator<Map.Entry<String, Long>>() {
 			@Override
@@ -196,6 +192,7 @@ public class Calculate_sales {
 		});
 
 		try {
+			SummaryFiles.createNewFile();
 			FileWriter filewriter = new FileWriter(SummaryFiles);
 			for (Map.Entry<String, Long> e : salesMap2) {
 				filewriter.write(e.getKey() + "," + mapName.get(e.getKey()) + "," + e.getValue() + Separate);
@@ -212,14 +209,14 @@ public class Calculate_sales {
 
 
 			/*ファイル読み出しメソッド*/
-	public static boolean readingFile(String path, String filename, String name, String code,
+	public static boolean readingFile(String path , String name, String code,
 			HashMap<String, String> nameMap, HashMap<String, Long> salesMap) {
 
 		BufferedReader br = null;
 
 		try {
 
-			File File = new File(path, filename);
+			File File = new File( path );
 			FileReader filereader = new FileReader( File );
 			br  = new BufferedReader( filereader );
 			String str;
