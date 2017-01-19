@@ -106,11 +106,13 @@ public class Calculate_sales {
 
 				/* この4行で支店コード別売上高合計 */
 
+				long checkSum;
+
 				long branchSales = Long.parseLong(salesFile.get(2));
 				long branchValue = branchSalesMap.get(salesFile.get(0));
 				branchSum = branchSales + branchValue;
-				long checkSum1 = String.valueOf(branchSum).length();
-				if (checkSum1 > 10){
+				checkSum = String.valueOf(branchSum).length();
+				if (checkSum > 10){
 					System.out.println("合計金額が10桁を超えました");
 					return;
 				}
@@ -121,8 +123,8 @@ public class Calculate_sales {
 				long commoditySales = Long.parseLong(salesFile.get(2));
 				long commodityValue = commoditySalesMap.get(salesFile.get(1));
 				commoditySum = commoditySales + commodityValue;
-				long checkSum2 = String.valueOf(commoditySum).length();
-				if (checkSum2 > 10){
+				checkSum = String.valueOf(commoditySum).length();
+				if (checkSum > 10){
 					System.out.println("合計金額が10桁を超えました");
 					return;
 				}
@@ -131,12 +133,12 @@ public class Calculate_sales {
 
 			}catch(IOException e){
 				System.out.println("予期せぬエラーが発生しました");
-			}finally {
+			}finally{
 				try {
 					if (br != null){
 						br.close();
 					}
-				}catch (IOException e){
+				}catch(IOException e){
 					System.out.println("予期せぬエラーが表示されました");
 				}
 			}
@@ -164,7 +166,7 @@ public class Calculate_sales {
 		List<Map.Entry<String, Long>> salesMap = new ArrayList<>(mapNameSalesMap.entrySet());
 		Collections.sort(salesMap, new Comparator<Map.Entry<String, Long>>() {
 			@Override
-			public int compare(Map.Entry<String, Long> o1, Map.Entry<String, Long> o2) {
+			public int compare(Map.Entry<String, Long> o1, Map.Entry<String, Long> o2){
 				return o2.getValue().compareTo(o1.getValue());
 			}
 		});
@@ -176,7 +178,7 @@ public class Calculate_sales {
 				filewriter.write(e.getKey() + "," + mapName.get(e.getKey()) + "," + e.getValue() + Separate);
 			}
 			filewriter.close();
-		}catch (IOException e) {
+		}catch(IOException e){
 			System.out.println("予期せぬエラーが発生しました");
 			return false;
 		}
@@ -188,7 +190,7 @@ public class Calculate_sales {
 
 			/*ファイル読み出しメソッド*/
 	public static boolean readingFile(String path , String name, String code,
-			HashMap<String, String> nameMap, HashMap<String, Long> salesMap) {
+			HashMap<String, String> nameMap, HashMap<String, Long> salesMap){
 
 		BufferedReader br = null;
 		try {
