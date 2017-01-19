@@ -30,7 +30,7 @@ public class Calculate_sales {
 		HashMap<String, Long> branchSalesMap = new HashMap<>();
 
 		String branchLstFilePath = args[0] + File.separator + "branch.lst";
-		if (!readingFile (branchLstFilePath, "支店", "^\\d{3}$", branchNameMap, branchSalesMap)){
+		if (!readingFile(branchLstFilePath, "支店", "^\\d{3}$", branchNameMap, branchSalesMap)){
 			return;
 		}
 
@@ -38,8 +38,8 @@ public class Calculate_sales {
 		HashMap<String, String> commodityNameMap = new HashMap<>();
 		HashMap<String, Long> commoditySalesMap = new HashMap<>();
 
-		String commodityLstFilePath = new String(args[0] + File.separator + "commodity.lst");
-		if (!readingFile (commodityLstFilePath, "商品", "[0-9a-zA-Z]{8}",
+		String commodityLstFilePath = args[0] + File.separator + "commodity.lst";
+		if (!readingFile(commodityLstFilePath, "商品", "[0-9a-zA-Z]{8}",
 				commodityNameMap, commoditySalesMap)){
 			return;
 		}
@@ -146,12 +146,12 @@ public class Calculate_sales {
 
 		/* 支店別集計ファイルの作成、書き込み */
 		String branchOutFilePath = args[0] + File.separator + "branch.out";
-		if (!writingFile (branchOutFilePath, branchNameMap, branchSalesMap)){
+		if (!writingFile(branchOutFilePath, branchNameMap, branchSalesMap)){
 			return;
 		}
 		/*商品別ファイルの作成、書き込み*/
 		String commodityOutFilePath = args[0] + File.separator + "commodity.out";
-		if(!writingFile (commodityOutFilePath, commodityNameMap, commoditySalesMap)){
+		if(!writingFile(commodityOutFilePath, commodityNameMap, commoditySalesMap)){
 			return;
 		}
 	}
