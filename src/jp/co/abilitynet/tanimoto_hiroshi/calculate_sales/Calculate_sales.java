@@ -70,7 +70,7 @@ public class Calculate_sales {
 
 		Long branchSum;/* 支店別売上額合計 */
 		Long commoditySum;/* 商品別売上額合計 */
-		for (int i = 0; i < salesFiles.size(); i++) {
+		for (int i = 0; i < salesFiles.size(); i++){
 
 			BufferedReader br = null;
 			try{
