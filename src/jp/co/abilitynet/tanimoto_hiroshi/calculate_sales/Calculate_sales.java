@@ -15,7 +15,7 @@ import java.util.Map;
 public class Calculate_sales {
 
 
-	public static void main(String[] args) {
+	public static void main(String[] args){
 
 		/* コマンドライン引数が1つあるかどうか */
 
@@ -73,7 +73,7 @@ public class Calculate_sales {
 		for (int i = 0; i < salesFiles.size(); i++) {
 
 			BufferedReader br = null;
-			try {
+			try{
 				FileReader fr = new FileReader(salesFiles.get(i));
 				br = new BufferedReader(fr);
 
@@ -134,7 +134,7 @@ public class Calculate_sales {
 			}catch(IOException e){
 				System.out.println("予期せぬエラーが発生しました");
 			}finally{
-				try {
+				try{
 					if (br != null){
 						br.close();
 					}
@@ -174,7 +174,7 @@ public class Calculate_sales {
 		try{
 			SummaryFiles.createNewFile();
 			FileWriter filewriter = new FileWriter(SummaryFiles);
-			for (Map.Entry<String, Long> e : salesMap) {
+			for (Map.Entry<String, Long> e : salesMap){
 				filewriter.write(e.getKey() + "," + mapName.get(e.getKey()) + "," + e.getValue() + Separate);
 			}
 			filewriter.close();
@@ -193,7 +193,7 @@ public class Calculate_sales {
 			HashMap<String, String> nameMap, HashMap<String, Long> salesMap){
 
 		BufferedReader br = null;
-		try {
+		try{
 			File File = new File(path);
 			FileReader filereader = new FileReader(File);
 			br = new BufferedReader(filereader);
@@ -216,7 +216,7 @@ public class Calculate_sales {
 			return false;
 
 		}finally{
-			try {
+			try{
 				if (br != null){
 					br.close();
 				}
